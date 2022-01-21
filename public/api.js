@@ -15,9 +15,8 @@ const API = {
 
     const res = await fetch("/api/workouts/" + id, {
       method: "PUT",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" }
-      
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
     });
 
     const json = await res.json();
@@ -30,6 +29,7 @@ const API = {
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" }
     });
+
     const json = await res.json();
 
     return json;
@@ -42,5 +42,3 @@ const API = {
     return json;
   },
 };
-
-
