@@ -1,48 +1,19 @@
-if (process.env.NODE_ENV !== 'production') { require('dotenv').config() }
 const mongoose = require('mongoose');
-const db = require('../models');
+const db = require('../models/workout');
 
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect('mongodb://localhost/workout', {
   useNewUrlParser: true,
-  useFindAndModify: false,
   useUnifiedTopology: true,
-});
-mongoose.connection.once('open', () => {
-  console.log('connect to database from seeder')
+  useCreateIndex: true,
+  useFindAndModify: false 
 });
 
 const workoutSeed = [
-
-    {
-        day: new Date(new Date().setDate(new Date().getDate() - 6)),
-        exercises: [
-          {
-            type: 'cardio',
-            name: 'Running',
-            duration: 25,
-            distance: 4,
-          },
-        ],
-      },
-      {
-        day: new Date(new Date().setDate(new Date().getDate() - 6)),
-        exercises: [
-          {
-            type: 'cardio',
-            name: 'Crunches',
-            duration: 20,
-            reps: 10,
-            sets: 3,
-          },
-        ],
-      },
-
-
   {
     day: new Date(new Date().setDate(new Date().getDate() - 9)),
     exercises: [
       {
-        type: 'Circuit training',
+        type: 'resistance',
         name: 'Bicep Curl',
         duration: 20,
         weight: 100,
@@ -56,7 +27,7 @@ const workoutSeed = [
     exercises: [
       {
         type: 'resistance',
-        name: ' Pull Up',
+        name: 'Lateral Pull',
         duration: 20,
         weight: 300,
         reps: 10,
@@ -77,10 +48,20 @@ const workoutSeed = [
       },
     ],
   },
-
+  {
+    day: new Date(new Date().setDate(new Date().getDate() - 6)),
+    exercises: [
+      {
+        type: 'cardio',
+        name: 'Running',
+        duration: 25,
+        distance: 4,
+      },
+    ],
+  },
   {
     day: new Date(new Date().setDate(new Date().getDate() - 5)),
-    exercises: [
+    exercise: [
       {
         type: 'resistance',
         name: 'Bench Press',
@@ -92,50 +73,7 @@ const workoutSeed = [
     ],
   },
   {
-    day: new Date(new Date().setDate(new Date().getDate() - 3)),
-    exercises: [
-      {
-        type: 'Circuit training',
-        name: 'Quad Press',
-        duration: 30,
-        weight: 300,
-        reps: 10,
-        sets: 4,
-      },
-    ],
-  },
-
-  {
     day: new Date(new Date().setDate(new Date().getDate() - 4)),
-    exercises: [
-      {
-        type: 'strength',
-        name: 'Bench Press',
-        duration: 20,
-        weight: 100,
-        reps: 10,
-        sets: 4,
-      },
-    ],
-  },
-
-  {
-
-  day: new Date(new Date().setDate(new Date().getDate() - 4)),
-    exercises: [
-      {
-        type: 'strength',
-        name: 'Dumbbell single arm row',
-        duration: 20,
-        weight: 30,
-        reps: 10,
-        sets: 5,
-      },
-    ],
-  },
-  
-  {
-    day: new Date(new Date().setDate(new Date().getDate() - 2)),
     exercises: [
       {
         type: 'resistance',
@@ -147,10 +85,35 @@ const workoutSeed = [
       },
     ],
   },
-  
+  {
+    day: new Date(new Date().setDate(new Date().getDate() - 3)),
+    exercise: [
+      {
+        type: 'resistance',
+        name: 'Quad Press',
+        duration: 30,
+        weight: 300,
+        reps: 10,
+        sets: 4,
+      },
+    ],
+  },
+  {
+    day: new Date(new Date().setDate(new Date().getDate() - 2)),
+    exercise: [
+      {
+        type: 'resistance',
+        name: 'Bench Press',
+        duration: 20,
+        weight: 300,
+        reps: 10,
+        sets: 4,
+      },
+    ],
+  },
   {
     day: new Date(new Date().setDate(new Date().getDate() - 1)),
-    exercises: [
+    exercise: [
       {
         type: 'resistance',
         name: 'Military Press',
@@ -163,8 +126,8 @@ const workoutSeed = [
   },
 ];
 
-db.Workout.deleteMany({})
-  .then(() => db.Workout.collection.insertMany(workoutSeed))
+db.deleteMany({})
+  .then(() => db.collection.insertMany(workoutSeed))
   .then((data) => {
     console.log(data.result.n + ' records inserted!');
     process.exit(0);
