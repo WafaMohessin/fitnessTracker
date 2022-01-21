@@ -1,41 +1,31 @@
-if (process.env.NODE_ENV !== 'production') { require('dotenv').config() }
-const express = require('express');
-const mongoose = require('mongoose');
+const express = require("express");
+const mongoose = require("mongoose");
+const logger = require("morgan");
 const path = require('path');
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
+
 const app = express();
+
+app.use(logger("dev"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/workout-tracker', {
-    useNewUrlParser: true,
-    useFindAndModify: false,
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { 
+    useNewUrlParser: true, 
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false
 });
 
-mongoose.connection.once('open', () => {
-    console.log('connected to database')
+// routes
+ app.use(require("./routes/api.js"));
+ app.use(require("./routes/htmlroutes.js"));
+
+
+app.listen(PORT, () => {
+  console.log(`Now listening ${PORT}!`);
 });
-
-// GET route for exercise page
-app.get("/exercise", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/exercise.html'));
-});
-
-//GET route for stats page
-app.get("/stats", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/stats.html'));
-});
-
-// Routes
-app.use(require("./routes/api.js"));
-
-app
-
-
-app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
