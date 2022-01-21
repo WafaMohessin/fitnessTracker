@@ -30,6 +30,8 @@ async function initExercise(data) {
 
 }
 
+initExercise();
+
 function handleWorkoutTypeChange(event) {
   workoutType = event.target.value;
 
@@ -132,16 +134,7 @@ function handleToastAnimationEnd() {
   }
 }
 
-function clearInputs() {
-  cardioNameInput.value = "";
-  nameInput.value = "";
-  setsInput.value = "";
-  distanceInput.value = "";
-  durationInput.value = "";
-  repsInput.value = "";
-  resistanceDurationInput.value = "";
-  weightInput.value = "";
-}
+
 
 if (workoutTypeSelect) {
   workoutTypeSelect.addEventListener("change", handleWorkoutTypeChange);
